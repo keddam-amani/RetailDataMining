@@ -1,108 +1,81 @@
 # Retail Market Basket Analysis
 
-This project explores **data mining techniques** using a real-world **UK-based online retail dataset**. The goal is to uncover meaningful patterns and insights from customer transactions, with a special focus on **association discovery** (market basket analysis).
+## Overview
 
----
+This project was conducted as part of a Knowledge Discovery and Data Mining course. Its main objective is to extract useful patterns from real-world retail transaction data by applying association rule mining techniques. The focus was placed on discovering meaningful associations between products, which can be used to support decision-making in areas such as recommendation systems, marketing, and inventory planning.
 
-##  Dataset Overview
+## Dataset Description
 
-The dataset includes **541,909 transaction records** between **December 1, 2010** and **December 1, 2011**, describing online purchases from a UK-based retailer.
+The dataset used in this project contains detailed transaction records from a UK-based online retail store. It includes purchases made between **December 1, 2010, and December 1, 2011**, with a total of **541,909 records** and **8 attributes**:
 
-###  Features:
+- `InvoiceNo`: Unique identifier for each transaction.
+- `StockCode`: Unique product code.
+- `Description`: Product name.
+- `Quantity`: Number of items purchased.
+- `InvoiceDate`: Timestamp of the transaction.
+- `UnitPrice`: Price per item (in euros).
+- `CustomerID`: Unique identifier for each customer.
+- `Country`: Customer’s country.
 
-| Column       | Description                                                                 |
-|--------------|-----------------------------------------------------------------------------|
-| `InvoiceNo`  | Unique invoice number. Shared across rows if part of the same order.        |
-| `StockCode`  | Product identifier (alphanumeric).                                          |
-| `Description`| Product name in uppercase.                                                  |
-| `Quantity`   | Number of items purchased in the transaction.                              |
-| `InvoiceDate`| Timestamp of the transaction (dd/mm/yyyy h:m).                              |
-| `UnitPrice`  | Price per unit in euros.                                                    |
-| `CustomerID` | Unique customer identifier.                                                 |
-| `Country`    | Country of the customer.                                                    |
+## Data Preprocessing
 
----
+To ensure accurate analysis, a thorough data cleaning process was applied:
 
-##  Data Preprocessing
+- **Duplicate Records**: No duplicate rows were found.
+- **Negative Values**: Transactions with negative `Quantity` or `UnitPrice` were removed. Negative quantities usually represented cancellations (invoices starting with "C").
+- **Missing Values**: Entries with missing `CustomerID` and `Description` were dropped due to lack of reliable repair methods.
 
-We performed several cleaning steps to ensure data quality:
+**Final dataset size**:  
+After preprocessing, **397,924 rows** remained from the original **541,909**.
 
-###  Summary of Cleaning Steps:
+## Exploratory Analysis
 
-| Step                                   | Remaining Rows |
-|----------------------------------------|----------------|
-| Original Dataset                       | 541,909        |
-| After Removing Duplicates              | 541,909        |
-| After Removing Negative Unit Prices    | 541,907        |
-| After Removing Negative Quantities     | 531,283        |
-| After Removing Null `CustomerID`       | 397,924        |
-| After Removing Null `Description`      | 397,924        |
+A series of visualizations and basic analyses were performed:
 
-- **Final dataset size:** 397,924 rows  
-- Negative `Quantity` values were associated with **canceled transactions** (e.g., InvoiceNo starting with "C").
+- **Geospatial Analysis**: Countries with the most orders were identified.
+- **Top-Selling Products**: Products with the highest total quantities sold were listed.
+- **Time Series Analysis**: Monthly sales trends were plotted to highlight seasonal patterns and peak demand periods.
 
----
+These insights are useful for understanding customer behavior and optimizing supply and logistics.
 
-##  Data Analysis & Visualization
+## Association Rule Mining
 
-Key analysis dimensions:
+### Technique Used
 
-###  Geographic Insights
-- Identified the **top countries** by transaction volume.
-- Helped highlight where most customers are located.
+The **Apriori algorithm** was applied to find frequent itemsets and generate association rules. This method is particularly effective in the retail domain for identifying items frequently purchased together.
 
-###  Best-Selling Products
-- Generated a list of **top 10 selling products**.
-- Useful to identify high-demand items, though may need further refinement for profitability analysis.
+### Metrics Used
 
-###  Temporal Trends
-- **Monthly breakdown** of sales reveals peak purchase times.
-- Helps with **logistics planning** and stock forecasting.
+- **Support**: Frequency of an itemset in the dataset.
+- **Confidence**: Likelihood of seeing item B in a transaction that contains item A.
+- **Lift**: Strength of the association; values >1 indicate a positive correlation.
 
----
+### Rule Discovery
 
-##  Association Discovery (Market Basket Analysis)
+Rules of the form:
+```
+If Product A is bought → Product B is likely to be bought
+```
+were generated and evaluated using the above metrics. Additionally, **three-item association rules** were analyzed to find deeper patterns.
 
-We used **association rule mining** to identify products that are frequently bought together.
+### Applications
 
-###  Why Association Rules?
-- Helps detect **buying patterns**.
-- Useful for **product placement**, **recommendations**, **bundles**, and **targeted promotions**.
+The resulting rules can be used in:
 
-###  Metrics Explained
+1. **Online Recommendations** – Suggesting products to users during browsing or checkout.
+2. **Targeted Advertising** – Promoting products that customers are likely to buy together.
+3. **Promotional Campaigns** – Creating bundle offers or conditional discounts.
+4. **In-store Layout Optimization** – Placing related items close to each other.
 
-- **Support:** Frequency of itemset in the dataset.
-- **Confidence:** Likelihood of consequent given the antecedent.
-- **Lift:** Strength of association.  
-  - `>1`: Positive association  
-  - `=1`: No association  
-  - `<1`: Negative association
+## Limitations and Suggestions for Improvement
 
-###  Algorithm Used
+- The dataset did not include product costs, so only revenue (not profit) could be analyzed.
+- More advanced techniques such as **clustering** could be used to predict user behavior or enrich the understanding of customer groups.
 
-We used the **Apriori algorithm** to generate:
-- Frequent itemsets
-- Association rules
+## Conclusion
 
-### 📈 Example Association Rules
+This project successfully demonstrated how data mining techniques such as association rule mining can reveal actionable insights in a retail setting. The findings have practical implications for improving customer experience, increasing sales, and supporting strategic business decisions.
 
-- `If A → then B` (high confidence, high lift)
-- Extended to **three-way associations** like:  
-  `If A and B → then C`
-
-These deeper patterns allow for **greater granularity** and richer insights.
-
----
-
-##  Applications of Association Rules
-
-- **Product Placement**: Group strongly associated items in stores.
-- **Online Recommendations**: "Customers also bought" suggestions.
-- **Targeted Advertising**: Promote associated products to past buyers.
-- **Conditional Promotions**: Discounts when products are bought together.
-- **Bundling**: Sell associated products as a single package.
-
----
 
 ##  Tools & Technologies
 
